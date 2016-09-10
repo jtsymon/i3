@@ -328,4 +328,11 @@ void setup_signal_handler(void) {
         sigaction(SIGFPE, &action, NULL) == -1 ||
         sigaction(SIGSEGV, &action, NULL) == -1)
         ELOG("Could not setup signal handler.\n");
+
+    /*
+     * For some reason we get SIGTTIN the first time the media keys are pressed
+     * The default SIGTTIN behaviour is to stop the process, which hangs i3.
+     * So we have to ignore SIGTTIN.
+     */
+    signal(SIGTTIN, SIG_IGN);
 }
